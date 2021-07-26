@@ -1,0 +1,83 @@
+.facebook{
+    background:  #3a579a !important; 
+      color:white;
+}
+.twitter{
+      background: #00abf0 !important;
+        color:white;
+}
+.walk{
+      background: #4fc6dc !important;
+        color:white;
+}
+.purchase{
+      background: #F73033!important;
+        color:white;
+}  
+
+.twt{
+	color:#00abf0 !important;
+}
+.fb{
+	color: #3a579a !important; 
+	}
+	   .referals{
+    color:#cd1c1f;
+}
+.ref{
+    background:#cd1c1f;
+    color:white; 
+}
+
+	.walkins{
+	color:#4fc6dc !important;
+	}
+	.purch{
+		color: #F73033!important;
+	}
+	.logo{
+margin-top: -6px;
+font-weight: bold;
+color: white;
+}
+.no{
+	margin-left: 200px;
+width: 100px;
+margin-top: 50px;
+margin-bottom: 50px;
+}
+.shares{
+	padding-bottom: 39px;
+}
+.details{
+	margin-top: 10px;
+}
+.social-border{
+border: 1px solid;
+border-width: 2px;
+height: 30px;
+border-radius: 100px;
+width: 30px;
+line-height: 26px;
+}
+.share-drop{
+width: 180px;
+left: -79px;
+line-height: 24px;
+}
+.share-list{
+    margin-left: 5px;
+margin-right: 5px;
+}
+.social-dash{
+    border: 1px solid;
+    border-width: 2px;
+    height: 60px;
+    border-radius: 100px;
+    width: 60px;
+    line-height: 53px;
+   font-size:30px;
+}
+body{
+    font-family:"Raleway", sans-serif !important;
+}

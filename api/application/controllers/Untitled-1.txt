@@ -1,0 +1,36 @@
+<?php
+function imageUpload($img) {
+	$targetDir = "../../images/"; 
+	$allowTypes = array('jpg','png','jpeg','gif'); 
+
+	@$fileNames = array_filter($img['name']);
+	    if(!empty($fileNames))
+	    { 
+	    	$array = array();
+	        foreach($img['name'] as $key=>$val)
+	        { 
+	            $fileName = basename(time().'-'.$img['name'][$key]); 
+	            $targetFilePath = $targetDir . $fileName; 
+	             
+	            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION); 
+	            
+	            if(in_array($fileType, $allowTypes))
+	            { 
+	                if(move_uploaded_file($img['tmp_name'][$key], $targetFilePath))
+	                { 
+	                	$array[] = $fileName;
+	                }
+	                else
+	                { 
+	                    @$errorUpload .= $img['name'][$key].' | ';
+	                } 
+	            }
+	            else
+	            { 
+	                $errorUploadType .= $img['name'][$key].' | ';
+	            } 
+	        }
+	        return $array;
+	    }
+	}
+?>

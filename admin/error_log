@@ -1,0 +1,26 @@
+[31-Mar-2017 15:37:32 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/add_beacons.php on line 233
+[01-Apr-2017 06:15:23 UTC] PHP Parse error:  syntax error, unexpected '"designmycode@gmail.com"' (T_CONSTANT_ENCAPSED_STRING), expecting variable (T_VARIABLE) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 156
+[06-Apr-2017 10:31:29 UTC] PHP Parse error:  syntax error, unexpected '?' in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/setting.php on line 136
+[05-May-2017 10:13:00 UTC] PHP Parse error:  syntax error, unexpected 'echo' (T_ECHO) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/dashboard.php on line 103
+[05-May-2017 10:13:32 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/dashboard.php on line 103
+[15-May-2017 14:06:43 UTC] PHP Parse error:  syntax error, unexpected 'NULL' (T_STRING), expecting ')' in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Supercontroller.php on line 115
+[15-May-2017 14:09:09 UTC] PHP Parse error:  syntax error, unexpected 'NULL' (T_STRING), expecting ')' in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Supercontroller.php on line 115
+[17-May-2017 07:18:16 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:18 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:22 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:26 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:37 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:39 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[17-May-2017 07:18:48 UTC] PHP Parse error:  syntax error, unexpected 't' (T_STRING) in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 352
+[29-May-2017 08:47:34 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[29-May-2017 11:31:01 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 978
+[09-Jun-2017 04:48:14 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:02:16 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:02:37 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:06:19 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:06:23 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:06:27 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:06:36 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[09-Jun-2017 10:07:31 UTC] PHP Fatal error:  Call to undefined function set_value() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/views/login.php on line 101
+[28-Jun-2017 06:16:06 UTC] PHP Fatal error:  Cannot redeclare Adminmodel::getStoreWalkinDetailsByMonth() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/models/Adminmodel.php on line 343
+[28-Jun-2017 10:51:38 UTC] PHP Fatal error:  Call to undefined method Adminmodel::userWalkinFullInformation() in /home/canopusinfo/public_html/cashrub/cashrub_admin/application/controllers/Control.php on line 1505

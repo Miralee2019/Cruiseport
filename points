@@ -1,0 +1,25 @@
+1. Offer sharing - only once by user.
+2. Fb & twitter should share only once.
+3. If app is active show the alert.
+4. If not show the notification.
+5. Sign up issue.
+6. Minimum points for store credit points.
+7. Refresh functionality on superadmin page.
+8. Push notification configuration. From our side. Branch.io
+9. App share issue.
+10. Expiry date of offer.
+11. Superadmin credit points - show count of accepted payments. Sum(points)
+12. When app is shared - points get deducted through superadmin.
+13. When offer is shared - poinst get deducted through store.
+14. New notification menu - show activity of user like app/offer share, walkin to store.
+15. Require new api for claimed coupons by user.
+16. shareOfferWithSocial_post - need to change facebook_points value.
+
+
+Issue 6 & 30
+
+Redeem coupons => Next Flow?
+
+Superadmin Balance issue 
+
+Superadmin need to show points count instead of credit count on dashboard

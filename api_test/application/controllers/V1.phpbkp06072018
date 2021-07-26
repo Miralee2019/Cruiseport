@@ -1,0 +1,279 @@
+<?php
+
+error_reporting(0);
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+require APPPATH . '/libraries/REST_Controller.php';
+require APPPATH . '/libraries/apn.php';
+
+
+// define("upload_url", "http://139.59.18.176/admin/", true);
+//define("upload_url", "http://linosys.net/proj/cashrub/admin/", true);
+define("upload_url", "http://localhost/cashrub/cashrub_admin/", true);
+
+// require APPPATH . '/libraries/smtp/Send_mail.php';
+
+class V1 extends REST_Controller {
+
+    function __construct() {
+        // Construct the parent class
+        parent::__construct();
+        $this->load->helper('url');
+        $this->load->model('Apimodel');
+        date_default_timezone_set("Asia/Kolkata");
+    }
+
+    function applyMultithreading_post() {
+        $this->load->library('async');
+        $url = site_url('v1/send_mail');
+        // var_dump($url);die;
+        $params = array(
+            'to_email' => "designmycode@gmail.com",
+            'subject' => "hello",
+            'body' => "hello world",
+        );
+
+        $this->async->post_async($url, $params);
+        //      $this->sendMail();
+        // $sts =  $this->send_mail($to_email,$subject,$body,$headers);
+        echo "hello";
+    }
+    /* SUBODH :: Below changes made in the function and flow
+    * Send OTP before inserting user data into database. API call is otp_auth_post()
+    * Verify mobile number before inserting data into database. API call is verifyPhoneOtpAuth_post
+    * Use new API to resend OTP. API Call is resendOTPAuth_post()
+    * Additional parameters needs to send in this API call :
+    * otp, otp_auth_id, device_id, access_token
+    */
+    function userRegistration_post() {
+        $post = json_decode(file_get_contents("php://input"), true);
+        $keys = array_keys($post); //convert json into array formate
+        //$post = $_POST; //SUBODH :: for testing, remove later
+        sort($keys); //sort array to campare with sample string
+        // echo md5(time()); die;
+        if (($post["is_social"]) == "1") {
+            if ($post["fb_userid"] != '') {
+
+                $user = $this->Apimodel->select_data('T_User', array('fb_userid' => $post["fb_userid"]));
+                $user2 = $this->Apimodel->select_data('T_User', array('phone_number' => $post["phone_number"]));
+
+                if($user1 != 0 && $user1[0]->otp_verify == 0) {
+                    $delete_data = $this->Apimodel->delete('T_User', array('email' => $post["email"]));
+                } elseif ($user2 != 0 && $user2[0]->otp_verify == 0) {
+                    $delete_phone = $this->Apimodel->delete('T_User', array('phone_number' => $post["phone_number"]));
+                }
+
+                $phone_number = $this->Apimodel->select_data('T_User', array('phone_number' => $post["phone_number"]));
+                $after_delete = $this->Apimodel->select_data('T_User', array('fb_userid' => $post["fb_userid"]));
+                $store_phone_number = $this->Apimodel->select_data('T_Store', array('store_mobile_no' => $post["phone_number"]));
+
+                $email = $this->Apimodel->select_data('T_User', array('email' => $post["email"]));
+
+                $chk_store_email = $this->Apimodel->select_data('T_Store', array('store_email' => $post["email"]));
+
+                // $phone_number = $this->Apimodel->select_data('T_User',array('phone_number'=>$post["phone_number"]));
+
+                if ($after_delete || $chk_store_email || $email) {
+                    $responsearray = array("status" => 6009, "success" => false, "message" => "Email id is already registered", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                } elseif ($phone_number != 0 || $store_phone_number != 0) {
+                    $responsearray = array("status" => 6009, "success" => false, "message" => "Phone number already exists.", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                }/* elseif ($store_email) {
+
+                    $responsearray = array("status" => 6009, "success" => false, "message" => "Email id is already registered", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                }*/ else {
+
+
+                    $insert_arr = [
+                        "name" => $post['name'],
+                        "email" => $post['email'],
+                        "password" => md5($post['password']),
+                        "is_social" => $post['is_social'],
+                        "fb_userid" => $post['fb_userid'],
+                        "phone_number" => $post['phone_number'],
+                        "reg_date" => date("Y-m-d"),
+                        "reg_time" => date("H:i:s"),
+                        "device_token" => $post['device_token'],
+                        'access_token' => $post['access_token'],
+                        "otp" => $post['otp'],
+                        "device_id" => $post['device_id'],
+                        "otp_auth_id" => $post['otp_auth_id']
+                    ];
+                    $insert_res = $this->Apimodel->insert('T_User', $insert_arr);
+
+
+                    //  $res1 = $this->Apimodel->update('T_User', array('user_id'=>$insert_res), array('otp' => '1234') );
+
+                    $insert_id = $this->Apimodel->select_data('T_User', array('user_id' => $insert_res));
+
+                    $result = [
+                        "user_id" => $insert_id[0]->user_id,
+                        "name" => $post['name'],
+                        "email" => $post['email'],
+                        "password" => md5($post['password']),
+                        "is_social" => $post['is_social'],
+                        "fb_userid" => $post['fb_userid'],
+                        "phone_number" => $post['phone_number'],
+                        "device_token" => $post['device_token']
+                    ];
+
+                    for ($i = 5; $i > 0; $i--) {
+                        $str = rand(1000, 9999);
+                    }
+
+                    $str = $str;
+                    $match = $str;
+                    //$post = file_get_contents("https://control.msg91.com/api/sendhttp.php?authkey=151244A0M4jedLtf590b0ff2&mobiles=+91" . $post['phone_number'] . "&message=Your+OTP+is " . $match . "&sender=CASHRUB&route=4&country=0");
+                    //$updateOtp = $this->Apimodel->update('T_User', array('user_id' => $insert_res), array('otp' => $match));
+                    $responsearray = array("status" => 2000, "success" => true, "message" => "Sign Up Successful", "result" => $result);
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                }
+            } else {
+                $required = array(
+                    "name" => $post['name'],
+                    "email" => $post['email'],
+                    "password" => $post['password'],
+                    "is_social" => $post['is_social'],
+                    "fb_userid" => $post['fb_userid'],
+                    "phone_number" => $post['phone_number'],
+                    "device_token" => $post['device_token']
+                );
+
+                $key = array_keys($required, "");
+
+                $key = json_encode(array_values($key));
+                $key = str_replace(array('[', ']', '"', ','), array('', '', '', ', '), $key);
+                $responsearray = array("status" => 4000, "success" => false, "message" => "The $key field is required", "result" => new stdClass());
+                $this->response($responsearray, REST_Controller::HTTP_OK);
+            }
+        } else {
+
+            $post = json_decode(file_get_contents("php://input"), true);
+            //$post = $_POST; //SUBODH :: for testing, remove later
+            $keys = array_keys($post); //convert json into array formate
+
+            $required = array(
+                "name" => $post['name'],
+                "email" => $post['email'],
+                "password" => $post['password'],
+                "is_social" => $post['is_social'],
+                "phone_number" => $post['phone_number'],
+                "device_token" => $post['device_token'],
+                'access_token' => $post['access_token'],
+                "otp" => $post['otp'],
+                "otp_verify" => '1',
+                "device_id" => $post['device_id'],
+                "otp_auth_id" => $post['otp_auth_id']
+            );
+
+            $key = array_keys($required, "");
+
+            if (!$key) {
+
+                /*
+                $user1 = $this->Apimodel->select_data('T_User', array('email' => $post["email"]));
+                $user2 = $this->Apimodel->select_data('T_User', array('phone_number' => $post["phone_number"]));
+                
+                
+                if($user1 != 0 && $user1[0]->otp_verify == 0) {
+                    $delete_data = $this->Apimodel->delete('T_User', array('email' => $post["email"]));
+                } elseif ($user2 != 0 && $user2[0]->otp_verify == 0) {
+                    $delete_phone = $this->Apimodel->delete('T_User', array('phone_number' => $post["phone_number"]));
+                }
+
+                $phone_number = $this->Apimodel->select_data('T_User', array('phone_number' => $post["phone_number"]));
+                $store_phone_number = $this->Apimodel->select_data('T_Store', array('store_mobile_no' => $post["phone_number"]));
+                $after_delete = $this->Apimodel->select_data('T_User', array('email' => $post["email"]));
+
+                $chk_store_email = $this->Apimodel->select_data('T_Store', array('store_email' => $post["email"]));
+
+                if ($after_delete || $chk_store_email) {
+                    $responsearray = array("status" => 6002, "success" => false, "message" => "Email id is already registered", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                } elseif ($phone_number != 0 || $store_phone_number != 0) {
+                    $responsearray = array("status" => 6002, "success" => false, "message" => "Phone number already exists.", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                } /*elseif () {
+
+                    $responsearray = array("status" => 6002, "success" => false, "message" => "Email id is already registered", "result" => new stdClass());
+                    $this->response($responsearray, REST_Controller::HTTP_OK);
+                } */
+                /*
+                else {
+
+                    $post_arr = [
+                        'name' => $post["name"],
+                        'email' => $post["email"],
+                        'password' => md5($post["password"]),
+                        'is_social' => $post["is_social"],
+                        'phone_number' => $post["phone_number"],
+                        'reg_date' => date("Y-m-d"),
+                        'reg_time' => date("H:i:s"),
+                        'device_token' => $post['device_token'],
+                        'access_token' => $post['access_token'],
+                        "otp" => $post['otp'],
+                        "otp_verify" => '1',
+                        "device_id" => $post['device_id'],
+                        "otp_auth_id" => $post['otp_auth_id']
+                    ]; */
+                    // $update_device_token = $this->Apimodel->update('T_User', array('email' => $post["email"]), array('device_token' => $post['device_token'], 'access_token' => md5(time())));
+                    /*
+                    $check_email = $this->Apimodel->insert('T_User', $post_arr);
+                    $res = $this->Apimodel->select_data('T_User', array('user_id' => $check_email));
+
+                    $res = $this->Apimodel->select_data('T_User', array('email' => $post["email"]));
+                    $post_arr2 = array(
+                        "user_id" => $res[0]->user_id,
+                        "name" => $post['name'] ?: '',
+                        "email" => $post['email'] ?: '',
+                        "password" => md5($post['password']) ?: '',
+                        "is_social" => $post['is_social'],
+                        "phone_number" => $post['phone_number'] ?: '',
+                        "device_token" => $post['device_token'] ?: '',
+                        "access_token" => $post['access_token'],
+                        "otp" => $post['otp'],
+                        "otp_verify" => '1',
+                        "device_id" => $post['device_id'],
+                        "otp_auth_id" => $post['otp_auth_id']
+                    ); */
+
+                    //  $res1 = $this->Apimodel->update('T_User',array('email'=>$post["email"]),array('otp' => "1234") );
+
+                    // SUBODH :: Remove OTP authentication from User Registration
+                    /*
+                    for ($i = 5; $i > 0; $i--) {
+                        $str = rand(1000, 9999);
+                    }
+
+                    $str = $str;
+                    $match = $str;
+                    $post = file_get_contents("https://control.msg91.com/api/sendhttp.php?authkey=151244A0M4jedLtf590b0ff2&mobiles=+91" . $post['phone_number'] . "&message=Your+OTP+is " . $match . "&sender=CASHRUB&route=4&country=0");
+                    $updateOtp = $this->Apimodel->update('T_User', array('user_id' => $check_email), array('otp' => $match));
+                    */
+
+                    //SUBODH :: Follow cases
+                    /*
+                    * 1. Simple Login for new user
+                    * 2. Registered User 
+                    */
+                     $post_arr = [
+                        'name' => $post["name"],
+                        'email' => $post["email"],
+                        'password' => md5($post["password"]),
+                        'is_social' => $post["is_social"],
+                        'phone_number' => $post["phone_number"],
+                        "status_id" => '1',
+                        'reg_date' => date("Y-m-d"),
+                        'reg_time' => date("H:i:s"),
+                        'device_token' => $post['device_token'],
+                        'access_token' => $post['access_token'],
+                        "otp" => $post['otp'],
+                        "otp_verify" => '1',
+                        "device_id" => $post['device_id'],
+                        "otp_auth_id" => $post['otp_auth_id']                        
+                        ];
+
+                    $exist_numbe
